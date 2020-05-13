@@ -1,0 +1,18 @@
+[package]
+name = "minilzo-rs"
+version = "0.1.0"
+authors = ["gmg137 <gmg137@live.com>"]
+edition = "2018"
+build = "build.rs"
+license = "GPL v2"
+readme = "README.md"
+keywords = ["lzo", "minilzo", "adler32"]
+categories = ["compression"]
+repository = "https://github.com/gmg137/minilzo-rs"
+description = "A pure rust implementation bound to the C version of minilzo."
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+
+[build-dependencies]
+cc = "^1"
