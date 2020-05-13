@@ -2,6 +2,8 @@
 
 A pure rust implementation bound to the C version of minilzo.
 
+[![Crates.io](https://img.shields.io/crates/v/minilzo-rs.svg)](https://crates.io/crates/minilzo-rs)
+[![Documentation](https://docs.rs/minilzo-rs/badge.svg)](https://docs.rs/minilzo-rs/)
 ![License](https://img.shields.io/github/license/gmg137/minilzo-rs.svg)
 [![Actions Status](https://github.com/gmg137/minilzo-rs/workflows/CI/badge.svg)](https://github.com/gmg137/minilzo-rs/actions)
 
