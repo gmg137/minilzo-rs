@@ -13,10 +13,10 @@ A pure rust implementation bound to the C version of minilzo.
 - decompress
 - adler32
 
-## Usage
+## Example
 ```rust
     // test compress
-    let mut lzo = minilzo_rs::LZO::new().unwrap();
+    let mut lzo = minilzo_rs::LZO::init().unwrap();
     let input = [0x00u8; 1024];
     let out = lzo.compress(&input).unwrap();
 
