@@ -135,7 +135,7 @@ impl LZO {
     /// Compress the src data and return an error if it fails.
     pub fn compress(&mut self, src: &[u8]) -> LZOResult<Vec<u8>> {
         let mut out_len = (src.len() + src.len() / 16 + 64 + 3) as u64;
-        let mut out: Vec<u8> = vec![0; out_len as usize];
+        let mut out: Vec<u8> = vec![0u8; out_len as usize];
         let code = unsafe {
             minilzo::lzo1x_1_compress(
                 src.as_ptr(),
@@ -151,7 +151,7 @@ impl LZO {
 
     /// Decompress data.
     pub fn decompress(&self, src: &[u8], dst_len: usize) -> LZOResult<Vec<u8>> {
-        let mut dst: Vec<u8> = vec![0u8; dst_len as usize];
+        let mut dst = vec![0u8; dst_len];
         let code = unsafe {
             minilzo::lzo1x_decompress(
                 src.as_ptr(),
@@ -170,7 +170,7 @@ impl LZO {
 
     /// safe decompression with overrun testing.
     pub fn decompress_safe(&self, src: &[u8], dst_len: usize) -> LZOResult<Vec<u8>> {
-        let mut dst = Vec::with_capacity(dst_len);
+        let mut dst = vec![0u8; dst_len];
         let code = unsafe {
             minilzo::lzo1x_decompress_safe(
                 src.as_ptr(),
