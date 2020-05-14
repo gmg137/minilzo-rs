@@ -1,3 +1,19 @@
+//! A pure rust implementation bound to the C version of minilzo.
+//!
+//! Example
+//!
+//! ```rust
+//! // test compress
+//! let mut lzo = minilzo_rs::LZO::init().unwrap();
+//! let input = [0x00u8; 1024];
+//! let out = lzo.compress(&input).unwrap();
+//!
+//! //test decompress
+//! let input = lzo.decompress_safe(&out[..], 1024);
+//! let input = input.unwrap();
+//! assert_eq!(input.len(), 1024);
+//! ```
+//!
 mod minilzo;
 use std::mem::{size_of, MaybeUninit};
 use std::os::raw::{c_int, c_long, c_short, c_uint};
@@ -74,7 +90,7 @@ fn lzo_err_code_to_result<T>(code: i32, value: T) -> LZOResult<T> {
 ///
 /// ```rust
 /// // test compress
-/// let mut lzo = minilzo_rs::LZO::new().unwrap();
+/// let mut lzo = minilzo_rs::LZO::init().unwrap();
 /// let input = [0x00u8; 1024];
 /// let out = lzo.compress(&input).unwrap();
 ///
@@ -89,7 +105,7 @@ pub struct LZO {
 
 impl LZO {
     /// Initializing an LZO instance.
-    pub fn new() -> LZOResult<Self> {
+    pub fn init() -> LZOResult<Self> {
         match Self::lzo_init() {
             Ok(_) => Ok(LZO {
                 wrkmem: unsafe { MaybeUninit::uninit().assume_init() },
@@ -194,7 +210,7 @@ mod tests {
     #[test]
     fn test_lzo_cmpress() {
         // test compress
-        let mut lzo = LZO::new().unwrap();
+        let mut lzo = LZO::init().unwrap();
         let input = [0x00u8; 1024];
         let out = lzo.compress(&input).unwrap();
 
