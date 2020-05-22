@@ -3,20 +3,21 @@
 //! Example
 //!
 //! ```rust
-//! // test compress
+//! // compress
 //! let mut lzo = minilzo_rs::LZO::init().unwrap();
 //! let input = [0x00u8; 1024];
 //! let out = lzo.compress(&input).unwrap();
 //!
-//! //test decompress
+//! // decompress
+//! let input_o = input.to_owned();
 //! let input = lzo.decompress_safe(&out[..], 1024);
 //! let input = input.unwrap();
-//! assert_eq!(input.len(), 1024);
+//! assert_eq!(&input_o[..], &input[..]);
 //! ```
 //!
 mod minilzo;
 use std::mem::{size_of, MaybeUninit};
-use std::os::raw::{c_int, c_long, c_short, c_uint};
+use std::os::raw::{c_int, c_long, c_short};
 
 type LZOResult<T> = Result<T, Error>;
 
@@ -117,7 +118,7 @@ impl LZO {
     fn lzo_init() -> LZOResult<()> {
         let code = unsafe {
             minilzo::__lzo_init_v2(
-                minilzo::LZO_VERSION as c_uint,
+                minilzo::lzo_version(),
                 size_of::<c_short>() as c_int,
                 size_of::<c_int>() as c_int,
                 size_of::<c_long>() as c_int,
@@ -215,9 +216,10 @@ mod tests {
         let out = lzo.compress(&input).unwrap();
 
         // test decompress
+        let input_o = input.to_owned();
         let input = lzo.decompress_safe(&out[..], 1024);
         let input = input.unwrap();
-        assert_eq!(input.len(), 1024);
+        assert_eq!(&input_o[..], &input[..]);
     }
 
     #[test]
