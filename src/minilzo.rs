@@ -2,7 +2,7 @@
 #![allow(warnings)]
 
 pub(crate) const LZO1X_1_MEM_COMPRESS: usize = 131072;
-pub(crate) type lzo_uint = ::std::os::raw::c_ulong;
+pub(crate) type lzo_uint = ::std::os::raw::c_ulonglong;
 extern "C" {
     pub fn __lzo_init_v2(
         arg1: ::std::os::raw::c_uint,
