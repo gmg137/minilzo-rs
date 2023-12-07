@@ -108,9 +108,12 @@ impl LZO {
     /// Initializing an LZO instance.
     pub fn init() -> LZOResult<Self> {
         match Self::lzo_init() {
-            Ok(_) => Ok(LZO {
-                wrkmem: unsafe { MaybeUninit::uninit().assume_init() },
-            }),
+            Ok(_) => {
+                let x = MaybeUninit::<[u8; 131072]>::uninit();
+                Ok(LZO {
+                    wrkmem: unsafe { x.assume_init() },
+                })
+            }
             Err(e) => Err(e),
         }
     }
@@ -163,8 +166,8 @@ impl LZO {
             )
         };
 
-        if code == 0 && dst.len() < dst_len as usize {
-            dst.resize(dst_len as usize, 0);
+        if code == 0 && dst.len() < dst_len {
+            dst.resize(dst_len, 0);
         }
         lzo_err_code_to_result(code, dst)
     }
@@ -182,8 +185,8 @@ impl LZO {
             )
         };
 
-        if code == 0 && dst.len() < dst_len as usize {
-            dst.resize(dst_len as usize, 0);
+        if code == 0 && dst.len() < dst_len {
+            dst.resize(dst_len, 0);
         }
         lzo_err_code_to_result(code, dst)
     }
@@ -200,8 +203,7 @@ impl LZO {
 /// ```
 pub fn adler32(buf: &[u8]) -> u32 {
     let checksum = 1u32;
-    let checksum = unsafe { minilzo::lzo_adler32(checksum, buf.as_ptr(), buf.len() as u64) };
-    checksum
+    unsafe { minilzo::lzo_adler32(checksum, buf.as_ptr(), buf.len() as u64) }
 }
 
 #[cfg(test)]
